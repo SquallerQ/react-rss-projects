@@ -23,6 +23,10 @@ function App(): JSX.Element {
     setSearchTerm(term);
   };
 
+  const handleReset = () => {
+    setSearchTerm('');
+  };
+
   return (
     <BrowserRouter>
       <div className={styles.container}>
@@ -30,10 +34,19 @@ function App(): JSX.Element {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
         </nav>
-        <ErrorBoundary onReset={() => setSearchTerm('')}>
+        <ErrorBoundary onReset={handleReset}>
           <Routes>
             <Route
               path="/"
+              element={
+                <>
+                  <Search onSearch={handleSearch} />
+                  <MainContent searchTerm={searchTerm} />
+                </>
+              }
+            />
+            <Route
+              path="/page/:page"
               element={
                 <>
                   <Search onSearch={handleSearch} />
