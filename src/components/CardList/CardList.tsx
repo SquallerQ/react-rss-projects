@@ -1,5 +1,5 @@
 import React, { JSX, useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
 import styles from './CardList.module.css';
@@ -10,8 +10,14 @@ interface PokemonSummary {
 }
 
 interface Pokemon extends PokemonSummary {
+  id: number;
   types: { type: { name: string } }[];
   sprites: { front_default: string };
+}
+
+interface PokemonDetails extends Pokemon {
+  abilities: { ability: { name: string } }[];
+  stats: { stat: { name: string }; base_stat: number }[];
 }
 
 interface CardListProps {
@@ -20,11 +26,18 @@ interface CardListProps {
 
 function CardList({ searchTerm }: CardListProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1', 10);
+  const { page } = useParams<{ page: string }>();
+  const currentPage = parseInt(page || searchParams.get('page') || '1', 10);
+  const pokemonId = searchParams.get('pokemonId');
   const itemsPerPage = 24;
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDetailsLoading, setIsDetailsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [detailsError, setDetailsError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
 
   useEffect(() => {
@@ -44,11 +57,13 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
                 : `HTTP error! Status: ${response.status}`
             );
           }
-          const data: Pokemon = await response.json();
-          pokemonDetails = [data];
+          const data = await response.json();
+          pokemonDetails = [
+            { ...data, url: `https://pokeapi.co/api/v2/pokemon/${data.id}/` },
+          ];
           setTotalPages(1);
         } else {
-          const offset = (page - 1) * itemsPerPage;
+          const offset = (currentPage - 1) * itemsPerPage;
           const response = await fetch(
             `https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${offset}`
           );
@@ -76,11 +91,58 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
     }
 
     fetchPokemon(searchTerm);
-  }, [searchTerm, page]);
+  }, [searchTerm, currentPage]);
+
+  useEffect(() => {
+    async function fetchPokemonDetails() {
+      if (!pokemonId) {
+        setSelectedPokemon(null);
+        setDetailsError(null);
+        return;
+      }
+      setIsDetailsLoading(true);
+      setDetailsError(null);
+      try {
+        const response = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+        );
+        if (!response.ok) {
+          throw new Error(
+            response.status === 404
+              ? 'Pokémon not found'
+              : `HTTP error! Status: ${response.status}`
+          );
+        }
+        const data: PokemonDetails = await response.json();
+        setSelectedPokemon(data);
+        setIsDetailsLoading(false);
+      } catch (err) {
+        setDetailsError(
+          err instanceof Error ? err.message : 'An error occurred'
+        );
+        setIsDetailsLoading(false);
+      }
+    }
+    fetchPokemonDetails();
+  }, [pokemonId]);
+
+  const getPokemonId = (pokemon: Pokemon): string => {
+    return pokemon.id.toString();
+  };
+
+  const handleCardClick = (pokemon: Pokemon) => {
+    const id = getPokemonId(pokemon);
+    setSearchParams({ page: currentPage.toString(), pokemonId: id });
+  };
+
+  const handleCloseDetails = () => {
+    setSearchParams({ page: currentPage.toString() });
+  };
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setSearchParams({ page: newPage.toString() });
+      setSelectedPokemon(null);
     }
   };
 
@@ -89,7 +151,7 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    if (page <= 6) {
+    if (currentPage <= 6) {
       return [
         ...Array.from({ length: 10 }, (_, i) => i + 1),
         '...',
@@ -97,7 +159,7 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
       ];
     }
 
-    if (page >= totalPages - 5) {
+    if (currentPage >= totalPages - 5) {
       return [
         1,
         '...',
@@ -108,7 +170,7 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
     return [
       1,
       '...',
-      ...Array.from({ length: 11 }, (_, i) => page - 5 + i),
+      ...Array.from({ length: 11 }, (_, i) => currentPage - 5 + i),
       '...',
       totalPages,
     ];
@@ -123,16 +185,26 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${selectedPokemon ? styles.shiftLeft : ''}`}
+    >
       <div className={styles.grid}>
         {pokemonList.length > 0 ? (
           pokemonList.map((pokemon) => (
-            <Card
+            <div
               key={pokemon.name}
-              name={pokemon.name}
-              description={`Type: ${pokemon.types.map((t) => t.type.name).join(', ')}`}
-              imageUrl={pokemon.sprites.front_default}
-            />
+              onClick={() => handleCardClick(pokemon)}
+              className={`${styles.cardWrapper} ${
+                selectedPokemon?.name === pokemon.name ? styles.selected : ''
+              }`}
+            >
+              <Card
+                name={pokemon.name}
+                description={`Type: ${pokemon.types.map((t) => t.type.name).join(', ')}`}
+                imageUrl={pokemon.sprites.front_default}
+                data-testid={`card-${pokemon.name}`}
+              />
+            </div>
           ))
         ) : (
           <div className={styles.noResults}>No Pokémon found</div>
@@ -141,8 +213,8 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
       {!searchTerm && pokemonList.length > 0 && (
         <div className={styles.pagination}>
           <button
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
             className={styles.pageButton}
           >
             Previous
@@ -156,19 +228,59 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
               <button
                 key={pageNum}
                 onClick={() => handlePageChange(pageNum as number)}
-                className={`${styles.pageButton} ${pageNum === page ? styles.active : ''}`}
+                className={`${styles.pageButton} ${pageNum === currentPage ? styles.active : ''}`}
               >
                 {pageNum}
               </button>
             )
           )}
           <button
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
             className={styles.pageButton}
           >
             Next
           </button>
+        </div>
+      )}
+      {isDetailsLoading && <Spinner />}
+      {detailsError && (
+        <div className={styles.detailsPanel}>
+          <button onClick={handleCloseDetails} className={styles.closeButton}>
+            ×
+          </button>
+          <div className={styles.error}>{detailsError}</div>
+        </div>
+      )}
+      {selectedPokemon && !isDetailsLoading && !detailsError && (
+        <div className={styles.detailsPanel}>
+          <button onClick={handleCloseDetails} className={styles.closeButton}>
+            ×
+          </button>
+          <h2>{selectedPokemon.name.toUpperCase()}</h2>
+          <img
+            src={selectedPokemon.sprites.front_default}
+            alt={selectedPokemon.name}
+            className={styles.detailsImage}
+          />
+          <div className={styles.detailsInfo}>
+            <p>
+              <strong>Types:</strong>{' '}
+              {selectedPokemon.types.map((t) => t.type.name).join(', ')}
+            </p>
+            <p>
+              <strong>Abilities:</strong>{' '}
+              {selectedPokemon.abilities.map((a) => a.ability.name).join(', ')}
+            </p>
+            <h3>Base Stats:</h3>
+            <ul>
+              {selectedPokemon.stats.map((stat) => (
+                <li key={stat.stat.name}>
+                  {stat.stat.name}: {stat.base_stat}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </div>

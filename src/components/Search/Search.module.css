@@ -1,5 +1,6 @@
 .searchContainer {
-  padding: 1rem;
+  width: 100%;
+  padding: 1rem 0;
   background-color: #e5e7eb;
   display: flex;
   justify-content: center;
