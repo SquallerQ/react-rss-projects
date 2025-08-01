@@ -2,6 +2,8 @@ import React, { JSX, useState, useEffect } from 'react';
 import { useSearchParams, useParams } from 'react-router-dom';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
+import Pagination from '../Pagination/Pagination';
+import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import styles from './CardList.module.css';
 
 interface PokemonSummary {
@@ -15,11 +17,6 @@ interface Pokemon extends PokemonSummary {
   sprites: { front_default: string };
 }
 
-interface PokemonDetails extends Pokemon {
-  abilities: { ability: { name: string } }[];
-  stats: { stat: { name: string }; base_stat: number }[];
-}
-
 interface CardListProps {
   searchTerm: string;
 }
@@ -31,13 +28,8 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
   const pokemonId = searchParams.get('pokemonId');
   const itemsPerPage = 24;
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails | null>(
-    null
-  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDetailsLoading, setIsDetailsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [detailsError, setDetailsError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState<number>(1);
 
   useEffect(() => {
@@ -59,7 +51,13 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
           }
           const data = await response.json();
           pokemonDetails = [
-            { ...data, url: `https://pokeapi.co/api/v2/pokemon/${data.id}/` },
+            {
+              id: data.id,
+              name: data.name,
+              url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
+              types: data.types,
+              sprites: data.sprites,
+            },
           ];
           setTotalPages(1);
           if (pokemonId) {
@@ -96,39 +94,6 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
     fetchPokemon(searchTerm);
   }, [searchTerm, currentPage, pokemonId, setSearchParams]);
 
-  useEffect(() => {
-    async function fetchPokemonDetails() {
-      if (!pokemonId) {
-        setSelectedPokemon(null);
-        setDetailsError(null);
-        return;
-      }
-      setIsDetailsLoading(true);
-      setDetailsError(null);
-      try {
-        const response = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
-        );
-        if (!response.ok) {
-          throw new Error(
-            response.status === 404
-              ? 'Pokémon not found'
-              : `HTTP error! Status: ${response.status}`
-          );
-        }
-        const data: PokemonDetails = await response.json();
-        setSelectedPokemon(data);
-        setIsDetailsLoading(false);
-      } catch (err) {
-        setDetailsError(
-          err instanceof Error ? err.message : 'An error occurred'
-        );
-        setIsDetailsLoading(false);
-      }
-    }
-    fetchPokemonDetails();
-  }, [pokemonId]);
-
   const getPokemonId = (pokemon: Pokemon): string => {
     return pokemon.id.toString();
   };
@@ -143,43 +108,6 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
     setSearchParams({ page: currentPage.toString() });
   };
 
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setSearchParams({ page: newPage.toString() });
-      setSelectedPokemon(null);
-    }
-  };
-
-  const getPageNumbers = () => {
-    if (totalPages <= 11) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
-
-    if (currentPage <= 6) {
-      return [
-        ...Array.from({ length: 10 }, (_, i) => i + 1),
-        '...',
-        totalPages,
-      ];
-    }
-
-    if (currentPage >= totalPages - 5) {
-      return [
-        1,
-        '...',
-        ...Array.from({ length: 10 }, (_, i) => totalPages - 9 + i),
-      ];
-    }
-
-    return [
-      1,
-      '...',
-      ...Array.from({ length: 11 }, (_, i) => currentPage - 5 + i),
-      '...',
-      totalPages,
-    ];
-  };
-
   if (isLoading) {
     return <Spinner />;
   }
@@ -189,9 +117,7 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
   }
 
   return (
-    <div
-      className={`${styles.container} ${selectedPokemon ? styles.shiftLeft : ''}`}
-    >
+    <div className={`${styles.container} ${pokemonId ? styles.shiftLeft : ''}`}>
       <div className={styles.grid}>
         {pokemonList.length > 0 ? (
           pokemonList.map((pokemon) => (
@@ -199,7 +125,9 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
               key={pokemon.name}
               onClick={() => handleCardClick(pokemon)}
               className={`${styles.cardWrapper} ${
-                selectedPokemon?.name === pokemon.name ? styles.selected : ''
+                pokemonId && pokemon.id && pokemonId === pokemon.id.toString()
+                  ? styles.selected
+                  : ''
               }`}
             >
               <Card
@@ -214,79 +142,17 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
           <div className={styles.noResults}>No Pokémon found</div>
         )}
       </div>
-      {!searchTerm && pokemonList.length > 0 && (
-        <div className={styles.pagination}>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={styles.pageButton}
-          >
-            Previous
-          </button>
-          {getPageNumbers().map((pageNum, index) =>
-            pageNum === '...' ? (
-              <span key={`ellipsis-${index}`} className={styles.ellipsis}>
-                ...
-              </span>
-            ) : (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum as number)}
-                className={`${styles.pageButton} ${pageNum === currentPage ? styles.active : ''}`}
-              >
-                {pageNum}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={styles.pageButton}
-          >
-            Next
-          </button>
-        </div>
-      )}
-      {isDetailsLoading && <Spinner />}
-      {detailsError && (
-        <div className={styles.detailsPanel}>
-          <button onClick={handleCloseDetails} className={styles.closeButton}>
-            ×
-          </button>
-          <div className={styles.error}>{detailsError}</div>
-        </div>
-      )}
-      {selectedPokemon && !isDetailsLoading && !detailsError && (
-        <div className={styles.detailsPanel}>
-          <button onClick={handleCloseDetails} className={styles.closeButton}>
-            ×
-          </button>
-          <h2>{selectedPokemon.name.toUpperCase()}</h2>
-          <img
-            src={selectedPokemon.sprites.front_default}
-            alt={selectedPokemon.name}
-            className={styles.detailsImage}
-          />
-          <div className={styles.detailsInfo}>
-            <p>
-              <strong>Types:</strong>{' '}
-              {selectedPokemon.types.map((t) => t.type.name).join(', ')}
-            </p>
-            <p>
-              <strong>Abilities:</strong>{' '}
-              {selectedPokemon.abilities.map((a) => a.ability.name).join(', ')}
-            </p>
-            <h3>Base Stats:</h3>
-            <ul>
-              {selectedPokemon.stats.map((stat) => (
-                <li key={stat.stat.name}>
-                  {stat.stat.name}: {stat.base_stat}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => {
+          if (page >= 1 && page <= totalPages) {
+            setSearchParams({ page: page.toString() });
+          }
+        }}
+        isVisible={!searchTerm && pokemonList.length > 0}
+      />
+      <PokemonDetails pokemonId={pokemonId} onClose={handleCloseDetails} />
     </div>
   );
 }

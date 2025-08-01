@@ -1,0 +1,53 @@
+.detailsPanel {
+  position: fixed;
+  top: 42px;  
+  right: -155px;
+  width: 200px;
+  height: 450px;
+  background-color: #fff;
+  border-left: 1px solid #ccc;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #dc2626;
+}
+
+.detailsImage {
+  max-width: 200px;
+  height: auto;
+  margin: 1rem auto;
+  display: block;
+}
+
+.detailsInfo {
+  text-align: left;
+  color: #4b5563;
+}
+
+.detailsInfo h3 {
+  margin-top: 1rem;
+  color: #1f2937;
+}
+
+.detailsInfo p {
+  margin: 0.5rem 0;
+}
+
+.detailsInfo ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}

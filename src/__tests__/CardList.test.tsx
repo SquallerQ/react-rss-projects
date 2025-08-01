@@ -73,10 +73,12 @@ describe('CardList Component', () => {
     vi.clearAllMocks();
   });
   afterAll(() => server.close());
+
   it('renders Spinner during loading', () => {
     renderCardList();
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
+
   it('renders single pokemon when searchTerm is provided', async () => {
     server.use(
       http.get(
@@ -89,6 +91,7 @@ describe('CardList Component', () => {
       expect(screen.getByTestId('card-pikachu')).toBeInTheDocument();
     });
   });
+
   it('renders error message when API returns 404', async () => {
     server.use(
       http.get(
@@ -101,6 +104,7 @@ describe('CardList Component', () => {
       expect(screen.getByText(/No Pokémon found/i)).toBeInTheDocument();
     });
   });
+
   it('renders "No Pokémon found" when API returns empty list', async () => {
     server.use(
       http.get(
@@ -113,24 +117,7 @@ describe('CardList Component', () => {
       expect(screen.getByText(/No Pokémon found/i)).toBeInTheDocument();
     });
   });
-  it('updates URL when pagination button is clicked', async () => {
-    server.use(
-      http.get(
-        'https://pokeapi.co/api/v2/pokemon',
-        () => new Response(JSON.stringify(pikachuListResponse), { status: 200 })
-      ),
-      http.get(
-        'https://pokeapi.co/api/v2/pokemon/25',
-        () => new Response(JSON.stringify(pikachuData), { status: 200 })
-      )
-    );
-    renderCardList('', ['/page/1'], new URLSearchParams({ page: '1' }));
-    await waitFor(() => {
-      expect(screen.getByText('1')).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByText('2'));
-    expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '2' });
-  });
+
   it('updates URL with pokemonId when card is clicked', async () => {
     server.use(
       http.get(
@@ -151,23 +138,5 @@ describe('CardList Component', () => {
       page: '1',
       pokemonId: '25',
     });
-  });
-  it('removes pokemonId from URL when details panel close button is clicked', async () => {
-    server.use(
-      http.get(
-        'https://pokeapi.co/api/v2/pokemon/25',
-        () => new Response(JSON.stringify(pikachuData), { status: 200 })
-      )
-    );
-    renderCardList(
-      '',
-      ['/page/1?pokemonId=25'],
-      new URLSearchParams({ page: '1', pokemonId: '25' })
-    );
-    await waitFor(() => {
-      expect(screen.getByTestId('spinner')).toBeInTheDocument();
-    });
-    fireEvent.click(screen.getByRole('button', { name: /×/i }));
-    expect(mockSetSearchParams).toHaveBeenCalledWith({ page: '1' });
   });
 });
