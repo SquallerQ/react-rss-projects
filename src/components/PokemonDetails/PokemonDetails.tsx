@@ -1,14 +1,7 @@
-import React, { JSX, useState, useEffect } from 'react';
+import React, { JSX } from 'react';
 import styles from './PokemonDetails.module.css';
-
-interface PokemonDetailsData {
-  id: number;
-  name: string;
-  types: { type: { name: string } }[];
-  sprites: { front_default: string };
-  abilities: { ability: { name: string } }[];
-  stats: { stat: { name: string }; base_stat: number }[];
-}
+import { usePokemonDetails } from '../../queries/pokemonQueries';
+import type { PokemonDetails } from '../../queries/pokemonQueries';
 
 interface PokemonDetailsProps {
   pokemonId: string | null;
@@ -19,58 +12,27 @@ function PokemonDetails({
   pokemonId,
   onClose,
 }: PokemonDetailsProps): JSX.Element {
-  const [selectedPokemon, setSelectedPokemon] =
-    useState<PokemonDetailsData | null>(null);
-  const [isDetailsLoading, setIsDetailsLoading] = useState<boolean>(false);
-  const [detailsError, setDetailsError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchPokemonDetails() {
-      if (!pokemonId) {
-        setSelectedPokemon(null);
-        setDetailsError(null);
-        return;
-      }
-      setIsDetailsLoading(true);
-      setDetailsError(null);
-      try {
-        const response = await fetch(`
-          https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-        if (!response.ok) {
-          throw new Error(
-            response.status === 404
-              ? 'Pokémon not found'
-              : `HTTP error! Status: ${response.status}`
-          );
-        }
-        const data: PokemonDetailsData = await response.json();
-        setSelectedPokemon(data);
-        setIsDetailsLoading(false);
-      } catch (err) {
-        setDetailsError(
-          err instanceof Error ? err.message : 'An error occurred'
-        );
-        setIsDetailsLoading(false);
-      }
-    }
-    fetchPokemonDetails();
-  }, [pokemonId]);
+  const {
+    data: selectedPokemon,
+    isLoading,
+    error,
+  } = usePokemonDetails(pokemonId ?? undefined);
 
   if (!pokemonId) {
     return <></>;
   }
 
-  if (isDetailsLoading) {
+  if (isLoading) {
     return <div className={styles.spinner}>Loading...</div>;
   }
 
-  if (detailsError) {
+  if (error) {
     return (
       <div className={styles.detailsPanel}>
         <button onClick={onClose} className={styles.closeButton}>
           ×
         </button>
-        <div className={styles.error}>{detailsError}</div>
+        <div className={styles.error}>{error.message}</div>
       </div>
     );
   }

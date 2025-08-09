@@ -1,6 +1,6 @@
 .detailsPanel {
   position: fixed;
-  top: 42px;  
+  top: 42px;
   right: -155px;
   width: 200px;
   height: 450px;
@@ -51,4 +51,10 @@
 .detailsInfo ul {
   margin: 0.5rem 0;
   padding-left: 1.5rem;
+}
+
+.spinner {
+  padding: 1rem;
+  text-align: center;
+  color: var(--gray-medium);
 }

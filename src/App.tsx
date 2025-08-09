@@ -9,6 +9,7 @@ import { ThemeProvider } from './components/ThemeContext/ThemeContext';
 import ThemeToggle from './components/ThemeToggle/ThemeToggle';
 import useLocalStorage from './hooks/useLocalStorage';
 import styles from './App.module.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 interface MainContentProps {
   searchTerm: string;
@@ -20,6 +21,7 @@ function MainContent({ searchTerm }: MainContentProps): JSX.Element {
 
 function App(): JSX.Element {
   const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', '');
+  const queryClient = new QueryClient();
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -31,39 +33,41 @@ function App(): JSX.Element {
 
   return (
     <BrowserRouter>
-      <ThemeProvider>
-        <div className={styles.container}>
-          <nav className={styles.nav}>
-            <Link to="/">Home</Link>
-            <ThemeToggle />
-            <Link to="/about">About</Link>
-          </nav>
-          <ErrorBoundary onReset={handleReset}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Search onSearch={handleSearch} />
-                    <MainContent searchTerm={searchTerm} />
-                  </>
-                }
-              />
-              <Route
-                path="/page/:page"
-                element={
-                  <>
-                    <Search onSearch={handleSearch} />
-                    <MainContent searchTerm={searchTerm} />
-                  </>
-                }
-              />
-              <Route path="/about" element={<About />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </ErrorBoundary>
-        </div>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <div className={styles.container}>
+            <nav className={styles.nav}>
+              <Link to="/">Home</Link>
+              <ThemeToggle />
+              <Link to="/about">About</Link>
+            </nav>
+            <ErrorBoundary onReset={handleReset}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <Search onSearch={handleSearch} />
+                      <MainContent searchTerm={searchTerm} />
+                    </>
+                  }
+                />
+                <Route
+                  path="/page/:page"
+                  element={
+                    <>
+                      <Search onSearch={handleSearch} />
+                      <MainContent searchTerm={searchTerm} />
+                    </>
+                  }
+                />
+                <Route path="/about" element={<About />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </ErrorBoundary>
+          </div>
+        </ThemeProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }
