@@ -42,6 +42,7 @@
 
 .refreshButton {
   display: flex;
+  margin: 0 auto;
   background-color: var(--button-bg);
   color: var(--button-text);
   border: none;
@@ -54,4 +55,16 @@
 
 .refreshButton:hover {
   background-color: var(--button-bg-hover);
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    max-width: 600px;  
+  }
+}
+
+@media (max-width: 800px) {
+  .grid {
+    max-width: 400px;  
+  }
 }
