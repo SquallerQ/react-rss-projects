@@ -16,7 +16,6 @@ export default defineConfig({
         'src/main.{ts,tsx}',
         'src/setupTests.{ts}',
         'src/**/*.d.ts',
-        'src/queries'
       ],
       thresholds: {
         statements: 80,

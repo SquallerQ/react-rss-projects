@@ -58,3 +58,17 @@
   text-align: center;
   color: var(--gray-medium);
 }
+
+@media (max-width: 1400px) {
+  .detailsPanel {
+    width: 160px;
+    right: -130px;
+  }
+
+}
+
+@media (max-width: 1300px) {
+  .detailsPanel {
+    right: -120px;
+  }
+}
