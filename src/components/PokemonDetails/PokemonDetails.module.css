@@ -1,0 +1,86 @@
+.detailsPanel {
+  position: fixed;
+  top: 42px;
+  right: -155px;
+  width: 200px;
+  height: 450px;
+  border: 1px solid var(--gray-medium);
+  padding: 1rem;
+  overflow-y: auto;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: var(--error-color);
+}
+
+.detailsImage {
+  max-width: 200px;
+  height: auto;
+  margin: 1rem auto;
+  display: block;
+}
+
+.detailsInfo {
+  text-align: left;
+  color: var(--text-color);
+}
+
+.detailsInfo h3 {
+  margin-top: 1rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.detailsInfo p {
+  margin: 0.5rem 0;
+}
+
+.detailsInfo ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.spinner {
+  padding: 1rem;
+  text-align: center;
+  color: var(--gray-medium);
+}
+
+@media (max-width: 1400px) {
+  .detailsPanel {
+    width: 160px;
+    right: -130px;
+  }
+
+}
+
+@media (max-width: 1300px) {
+  .detailsPanel {
+    right: -120px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .detailsPanel {
+    right: -80px;
+  }
+}
+
+@media (max-width: 800px) {
+  .detailsPanel {
+    right: 0px;
+  }
+}

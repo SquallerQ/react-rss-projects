@@ -1,0 +1,35 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--gray-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--gray-medium);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.title {
+  font-size: 2rem;
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+.text {
+  font-size: 1.1rem;
+  color: var(--gray-medium);
+  margin: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.link {
+  color: var(--button-bg);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+.link:hover {
+  color: var(--button-bg-hover);
+  text-decoration: underline;
+}

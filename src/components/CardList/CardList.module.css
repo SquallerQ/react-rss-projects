@@ -1,0 +1,70 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 3.5rem;
+}
+
+.error {
+  padding: 1rem;
+  color: var(--error-color);
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.noResults {
+  padding: 1rem;
+  text-align: center;
+  color: var(--gray-medium);
+  transition: color 0.3s ease;
+}
+
+.container {
+  padding: 1rem;
+  max-width: 80vw;
+  margin: 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.shiftLeft {
+  transform: translateX(-5%);
+}
+
+.cardWrapper {
+  cursor: pointer;
+}
+
+.cardWrapper.selected {
+  background-color: var(--button-bg);
+  transition: background-color 0.3s ease;
+}
+
+.refreshButton {
+  display: flex;
+  margin: 0 auto;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.refreshButton:hover {
+  background-color: var(--button-bg-hover);
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    max-width: 600px;  
+  }
+}
+
+@media (max-width: 800px) {
+  .grid {
+    max-width: 400px;  
+  }
+}
