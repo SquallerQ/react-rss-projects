@@ -1,5 +1,7 @@
+'use client';
+
 import React, { JSX } from 'react';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'next/navigation';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
 import Pagination from '../Pagination/Pagination';
@@ -26,9 +28,12 @@ interface CardListProps {
 }
 
 function CardList({ searchTerm }: CardListProps): JSX.Element {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { page } = useParams<{ page: string }>();
-  const currentPage = parseInt(page || searchParams.get('page') || '1', 10);
+  const searchParams = useSearchParams();
+  const params = useParams<{ page?: string }>();
+  const currentPage = parseInt(
+    params.page || searchParams.get('page') || '1',
+    10
+  );
   const pokemonId = searchTerm ? null : searchParams.get('pokemonId');
   const { selectedPokemons } = usePokemonStore();
   const itemsPerPage = 24;
@@ -44,14 +49,16 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
 
   const handleCardClick = (pokemon: Pokemon) => {
     if (searchTerm) return;
-    setSearchParams({
-      page: currentPage.toString(),
-      pokemonId: pokemon.id.toString(),
-    });
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('page', currentPage.toString());
+    newSearchParams.set('pokemonId', pokemon.id.toString());
+    window.history.pushState({}, '', `?${newSearchParams.toString()}`);
   };
 
   const handleCloseDetails = () => {
-    setSearchParams({ page: currentPage.toString() });
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete('pokemonId');
+    window.history.pushState({}, '', `?${newSearchParams.toString()}`);
   };
 
   const handleRefresh = async () => {
@@ -105,10 +112,10 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
         totalPages={totalPages}
         onPageChange={(page) => {
           if (page >= 1 && page <= totalPages) {
-            setSearchParams({
-              page: page.toString(),
-              ...(pokemonId && { pokemonId }),
-            });
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.set('page', page.toString());
+            if (pokemonId) newSearchParams.set('pokemonId', pokemonId);
+            window.history.pushState({}, '', `?${newSearchParams.toString()}`);
           }
         }}
         isVisible={!searchTerm && !!data?.pokemonDetails?.length}

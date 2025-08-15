@@ -1,3 +1,5 @@
+'use client';
+
 import React, { JSX } from 'react';
 import { useTheme } from '../ThemeContext/ThemeContext';
 import styles from './ThemeToggle.module.css';
