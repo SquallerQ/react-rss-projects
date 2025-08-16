@@ -1,4 +1,7 @@
+'use client';
+
 import React, { JSX } from 'react';
+import Image from 'next/image';
 import styles from './Card.module.css';
 import { usePokemonStore } from '../../store/pokemonStore';
 
@@ -37,7 +40,13 @@ function Card({ id, name, description, imageUrl }: CardProps): JSX.Element {
         onChange={handleCheckboxChange}
         className={styles.checkbox}
       />
-      <img src={imageUrl} alt={name} className={styles.image} />
+      <Image
+        src={imageUrl}
+        alt={`${name} sprite`}
+        width={96}
+        height={96}
+        className={styles.image}
+      />
       <h2 className={styles.title}>{name}</h2>
       <p className={styles.description}>{description}</p>
     </div>
