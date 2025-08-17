@@ -2,6 +2,7 @@
 
 import React, { JSX } from 'react';
 import { useSearchParams, useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
 import Pagination from '../Pagination/Pagination';
@@ -28,6 +29,7 @@ interface CardListProps {
 }
 
 function CardList({ searchTerm }: CardListProps): JSX.Element {
+  const t = useTranslations('CardList');
   const searchParams = useSearchParams();
   const params = useParams<{ page?: string; locale?: string }>();
   const router = useRouter();
@@ -74,7 +76,7 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
   return (
     <div className={`${styles.container} ${pokemonId ? styles.shiftLeft : ''}`}>
       <button onClick={handleRefresh} className={styles.refreshButton}>
-        Refresh
+        {t('refresh')}
       </button>
       <div className={styles.grid}>
         {data?.pokemonDetails?.length ? (
@@ -98,7 +100,7 @@ function CardList({ searchTerm }: CardListProps): JSX.Element {
             </div>
           ))
         ) : (
-          <div className={styles.noResults}>No Pokémon found</div>
+          <div className={styles.noResults}>{t('noResults')}</div>
         )}
       </div>
       <Pagination

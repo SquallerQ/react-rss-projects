@@ -2,6 +2,7 @@
 
 import React, { JSX } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import styles from './Pagination.module.css';
 
 interface PaginationProps {
@@ -17,6 +18,7 @@ function Pagination({
   onPageChange,
   isVisible,
 }: PaginationProps): JSX.Element {
+  const t = useTranslations('Pagination');
   const router = useRouter();
   const params = useParams();
 
@@ -68,7 +70,7 @@ function Pagination({
         disabled={currentPage === 1}
         className={styles.pageButton}
       >
-        Previous
+        {t('previous')}
       </button>
       {getPageNumbers().map((pageNum, index) =>
         pageNum === '...' ? (
@@ -90,7 +92,7 @@ function Pagination({
         disabled={currentPage === totalPages}
         className={styles.pageButton}
       >
-        Next
+        {t('next')}
       </button>
     </div>
   );

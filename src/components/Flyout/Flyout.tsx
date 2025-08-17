@@ -1,9 +1,13 @@
+'use client';
+
 import React, { JSX, useEffect, useRef, useState } from 'react';
 import { usePokemonStore } from '../../store/pokemonStore';
 import { downloadCSV } from '../../utils/downloadCSV';
+import { useTranslations } from 'next-intl';
 import styles from './Flyout.module.css';
 
 function Flyout(): JSX.Element {
+  const t = useTranslations('Flyout');
   const { selectedPokemons, clearItems } = usePokemonStore();
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string>('');
@@ -27,7 +31,7 @@ function Flyout(): JSX.Element {
 
   return (
     <div className={styles.flyout}>
-      <h3>Selected Pokémon ({selectedPokemons.length})</h3>
+      <h3>{t('selectedTitle', { count: selectedPokemons.length })}</h3>
       <ul className={styles.list}>
         {selectedPokemons.map((pokemon) => (
           <li key={pokemon.id} className={styles.listItem}>
@@ -37,7 +41,7 @@ function Flyout(): JSX.Element {
       </ul>
       <div className={styles.buttonContainer}>
         <button onClick={handleDownload} className={styles.downloadButton}>
-          Download CSV
+          {t('downloadButton')}
         </button>
         {downloadUrl && (
           <a
@@ -46,11 +50,11 @@ function Flyout(): JSX.Element {
             download={filename}
             className={styles.downloadLink}
           >
-            Download
+            {t('downloadLink')}
           </a>
         )}
         <button onClick={clearItems} className={styles.clearButton}>
-          Unselect all
+          {t('clearButton')}
         </button>
       </div>
     </div>

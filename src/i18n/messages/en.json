@@ -1,4 +1,34 @@
 {
+  "CardList": {
+    "refresh": "Refresh",
+    "noResults": "No Pokémon found"
+  },
+  "PokemonDetails": {
+    "loading": "Loading...",
+    "types": "Types:",
+    "abilities": "Abilities:",
+    "baseStats": "Base Stats:"
+  },
+  "Pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "Nav": {
+    "home": "Home",
+    "about": "About"
+  },
+  "About": {
+    "title": "About",
+    "author": "Author: ",
+    "authorName": "Squaller",
+    "course": "RS School React Course"
+  },
+  "Flyout": {
+    "selectedTitle": "Selected Pokémon ({count})",
+    "downloadButton": "Download CSV",
+    "downloadLink": "Download",
+    "clearButton": "Unselect all"
+  },
   "Search": {
     "placeholder": "Search Pokémon...",
     "resetTitle": "Reset search",

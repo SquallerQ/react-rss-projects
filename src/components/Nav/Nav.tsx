@@ -3,15 +3,17 @@
 import React from 'react';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import Link from 'next/link';
-
+import { useTranslations } from 'next-intl';
 import styles from './Nav.module.css';
 
 export default function Nav() {
+  const t = useTranslations('Nav');
+
   return (
     <nav className={styles.nav}>
-      <Link href="/">Home</Link>
+      <Link href="/">{t('home')}</Link>
       <ThemeToggle />
-      <Link href="/about">About</Link>
+      <Link href="/about">{t('about')}</Link>
     </nav>
   );
 }

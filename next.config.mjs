@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: 'raw.githubusercontent.com',
         pathname: '/PokeAPI/sprites/master/sprites/pokemon/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'pokeapi.co',
+        pathname: '/api/v2/**',
+      },
     ],
   },
 };
