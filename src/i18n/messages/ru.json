@@ -1,0 +1,43 @@
+{
+  "CardList": {
+    "refresh": "Обновить",
+    "noResults": "Покемоны не найдены"
+  },
+  "PokemonDetails": {
+    "loading": "Загрузка...",
+    "types": "Типы:",
+    "abilities": "Способности:",
+    "baseStats": "Базовые характеристики:"
+  },
+  "Pagination": {
+    "previous": "Предыдущая",
+    "next": "Следующая"
+  },
+  "Nav": {
+    "home": "Главная",
+    "about": "Инфо"
+  },
+  "About": {
+    "title": "Инфо",
+    "author": "Автор: ",
+    "authorName": "Squaller",
+    "course": "Курс React от RS School"
+  },
+  "Flyout": {
+    "selectedTitle": "Выбранные покемоны ({count})",
+    "downloadButton": "Скачать CSV",
+    "downloadLink": "Скачать",
+    "clearButton": "Убрать все",
+    "downloading": "Скачивание..."
+  },
+  "Search": {
+    "placeholder": "Поиск покемонов...",
+    "resetTitle": "Сбросить поиск",
+    "searchButton": "Поиск"
+  },
+  "NotFound": {
+    "title": "404 - Страница не найдена",
+    "message": "Извините, запрашиваемая страница не существует.",
+    "homeLink": "Вернуться на главную"
+  }
+}
