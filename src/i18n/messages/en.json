@@ -27,7 +27,8 @@
     "selectedTitle": "Selected Pokémon ({count})",
     "downloadButton": "Download CSV",
     "downloadLink": "Download",
-    "clearButton": "Unselect all"
+    "clearButton": "Unselect all",
+    "downloading": "Downloading..."
   },
   "Search": {
     "placeholder": "Search Pokémon...",

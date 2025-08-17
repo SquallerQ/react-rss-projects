@@ -1,33 +1,53 @@
 'use client';
 
-import React, { JSX, useEffect, useRef, useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { usePokemonStore } from '../../store/pokemonStore';
-import { downloadCSV } from '../../utils/downloadCSV';
 import { useTranslations } from 'next-intl';
 import styles from './Flyout.module.css';
 
 function Flyout(): JSX.Element {
   const t = useTranslations('Flyout');
   const { selectedPokemons, clearItems } = usePokemonStore();
-  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const [filename, setFilename] = useState<string>('');
-  const downloadLinkRef = useRef<HTMLAnchorElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownload = () => {
-    const { blob, filename: csvFilename } = downloadCSV(selectedPokemons);
-    const url = URL.createObjectURL(blob);
-    setDownloadUrl(url);
-    setFilename(csvFilename);
-  };
+  const handleDownload = async () => {
+    setIsDownloading(true);
 
-  useEffect(() => {
-    if (downloadUrl && downloadLinkRef.current) {
-      downloadLinkRef.current.click();
-      URL.revokeObjectURL(downloadUrl);
-      setDownloadUrl(null);
-      setFilename('');
+    try {
+      const response = await fetch('/api/download-csv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedPokemons),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate CSV');
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const contentDisposition = response.headers.get('Content-Disposition');
+      const filename =
+        contentDisposition?.match(/filename="([^"]*)"/)?.[1] ||
+        `${selectedPokemons.length}_items.csv`;
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+    } finally {
+      setIsDownloading(false);
     }
-  }, [downloadUrl]);
+  };
 
   return (
     <div className={styles.flyout}>
@@ -40,19 +60,15 @@ function Flyout(): JSX.Element {
         ))}
       </ul>
       <div className={styles.buttonContainer}>
-        <button onClick={handleDownload} className={styles.downloadButton}>
-          {t('downloadButton')}
+        <button
+          onClick={handleDownload}
+          className={styles.downloadButton}
+          disabled={isDownloading}
+        >
+          {isDownloading
+            ? t('downloading', { default: 'Downloading...' })
+            : t('downloadButton')}
         </button>
-        {downloadUrl && (
-          <a
-            ref={downloadLinkRef}
-            href={downloadUrl}
-            download={filename}
-            className={styles.downloadLink}
-          >
-            {t('downloadLink')}
-          </a>
-        )}
         <button onClick={clearItems} className={styles.clearButton}>
           {t('clearButton')}
         </button>

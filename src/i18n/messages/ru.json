@@ -27,7 +27,8 @@
     "selectedTitle": "Выбранные покемоны ({count})",
     "downloadButton": "Скачать CSV",
     "downloadLink": "Скачать",
-    "clearButton": "Убрать все"
+    "clearButton": "Убрать все",
+    "downloading": "Скачивание..."
   },
   "Search": {
     "placeholder": "Поиск покемонов...",

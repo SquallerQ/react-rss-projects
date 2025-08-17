@@ -1,8 +1,8 @@
-import { Pokemon } from '../store/pokemonStore';
+'use server';
 
-export const downloadCSV = (
-  selectedPokemons: Pokemon[]
-): { blob: Blob; filename: string } => {
+import { Pokemon } from '../../src/store/pokemonStore';
+
+export async function generateCSV(selectedPokemons: Pokemon[]) {
   const headers = ['ID,Name,Description,Details URL'];
   const rows = selectedPokemons.map((pokemon) =>
     [
@@ -12,7 +12,13 @@ export const downloadCSV = (
       `https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`,
     ].join(',')
   );
+
   const csvContent = [...headers, ...rows].join('\n');
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  return { blob, filename: `${selectedPokemons.length}_items.csv` };
-};
+  const filename = `${selectedPokemons.length}_items.csv`;
+
+  return {
+    content: csvContent,
+    filename: filename,
+    mimeType: 'text/csv;charset=utf-8;',
+  };
+}
