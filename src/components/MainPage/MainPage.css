@@ -1,0 +1,26 @@
+.main-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-page h1 {
+  margin-bottom: 20px;
+}
+
+.main-page button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #732a8d;
+  color: #fff;
+  border-radius: 4px;
+  transition: .4s all ease;
+}
+
+.main-page button:hover {
+  background-color: #480161;
+}
