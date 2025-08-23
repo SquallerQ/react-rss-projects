@@ -78,7 +78,9 @@ const validationSchema = Yup.object({
   country: Yup.string().required('Required'),
 });
 
-const UncontrolledForm: FC = () => {
+const UncontrolledForm: FC<{
+  focusRef?: React.RefObject<HTMLInputElement | null>;
+}> = ({ focusRef }) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [passwordStrength, setPasswordStrength] = useState<{
@@ -174,7 +176,7 @@ const UncontrolledForm: FC = () => {
 
       <div className="form-group">
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" />
+        <input type="text" id="name" name="name" ref={focusRef} />
         {errors.name && <span className="error">{errors.name}</span>}
       </div>
 

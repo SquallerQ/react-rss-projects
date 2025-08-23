@@ -69,7 +69,9 @@ const validationSchema = Yup.object({
   country: Yup.string().required('Required'),
 });
 
-const HookForm: FC = () => {
+const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
+  focusRef,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<{
@@ -156,7 +158,7 @@ const HookForm: FC = () => {
           name="name"
           control={control}
           render={({ field }) => (
-            <input type="text" id="hookform-name" {...field} />
+            <input type="text" id="hookform-name" {...field} ref={focusRef} />
           )}
         />
         {errors.name && <span className="error">{errors.name.message}</span>}

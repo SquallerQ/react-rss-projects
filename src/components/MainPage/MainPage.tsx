@@ -11,6 +11,8 @@ const MainPage: FC = () => {
   );
   const uncontrolledButtonRef = useRef<HTMLButtonElement>(null);
   const hookButtonRef = useRef<HTMLButtonElement>(null);
+  const uncontrolledNameInputRef = useRef<HTMLInputElement>(null);
+  const hookNameInputRef = useRef<HTMLInputElement>(null);
   const { forms, markAsRead } = useFormStore();
 
   const openModal = (type: 'uncontrolled' | 'hook') => {
@@ -50,11 +52,15 @@ const MainPage: FC = () => {
         isOpen={modalType !== null}
         onClose={closeModal}
         focusRef={
-          modalType === 'uncontrolled' ? uncontrolledButtonRef : hookButtonRef
+          modalType === 'uncontrolled'
+            ? uncontrolledNameInputRef
+            : hookNameInputRef
         }
       >
-        {modalType === 'uncontrolled' && <UncontrolledForm />}
-        {modalType === 'hook' && <HookForm />}
+        {modalType === 'uncontrolled' && (
+          <UncontrolledForm focusRef={uncontrolledNameInputRef} />
+        )}
+        {modalType === 'hook' && <HookForm focusRef={hookNameInputRef} />}
       </Modal>
       <div className="forms-list">
         <h2>Submitted Forms</h2>

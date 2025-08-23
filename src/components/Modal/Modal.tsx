@@ -6,15 +6,15 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-  focusRef?: React.RefObject<HTMLButtonElement | null>;
+  focusRef?: React.RefObject<HTMLElement | null>;
 }
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children, focusRef }) => {
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      closeButtonRef.current?.focus();
+      (focusRef?.current || modalContentRef.current)?.focus();
     }
 
     const handleEscape = (event: KeyboardEvent) => {
@@ -32,20 +32,22 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, focusRef }) => {
     };
   }, [isOpen, onClose, focusRef]);
 
-  const handleOverlayClick = () => {
+  const handleOverlayClick = (e: React.MouseEvent) => {
     if (window.getSelection()?.toString()) {
       return;
     }
-    onClose();
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
 
   return createPortal(
     <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" ref={modalContentRef} tabIndex={-1}>
         {children}
-        <button className="modal-close" ref={closeButtonRef} onClick={onClose}>
+        <button className="modal-close" onClick={onClose}>
           Close
         </button>
       </div>
