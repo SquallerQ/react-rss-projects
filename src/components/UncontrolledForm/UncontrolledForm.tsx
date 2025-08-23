@@ -1,7 +1,7 @@
 import { FC, FormEvent, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { useFormStore } from '../../store';
-import './UncontrolledForm.css';
+import '../../styles/FormStyles.css';
 
 interface FormData {
   name: string;
@@ -47,7 +47,7 @@ const validationSchema = Yup.object({
     .required('Name is required'),
   age: Yup.number()
     .typeError('Age must be a number')
-    .min(0, 'Age cannot be negative')
+    .min(13, 'Age must be at least 13 years')
     .required('Age is required'),
   email: Yup.string()
     .email('Invalid email format')
@@ -69,15 +69,13 @@ const validationSchema = Yup.object({
       /^[a-zA-Z0-9!@#$%^&*]*$/,
       'Confirm password must contain only Latin characters'
     )
-    .required('Confirm password is required'),
-  gender: Yup.string().required('Gender is required'),
+    .required('Required'),
+  gender: Yup.string().required('Required'),
   acceptTerms: Yup.boolean()
     .oneOf([true], 'You must accept the terms and conditions')
-    .required('You must accept the terms and conditions'),
-  picture: Yup.string().required('Image is required'),
-  country: Yup.string()
-    .matches(/^[a-zA-Z0-9]*$/, 'Country must contain only Latin characters')
-    .required('Country is required'),
+    .required('Required'),
+  picture: Yup.string().required('Required'),
+  country: Yup.string().required('Required'),
 });
 
 const UncontrolledForm: FC = () => {
@@ -129,8 +127,7 @@ const UncontrolledForm: FC = () => {
       };
       reader.readAsDataURL(pictureFile);
     } else {
-      setErrors({ picture: 'Image is required' });
-      return;
+      validateAndSubmit({ ...data, picture: '' });
     }
   };
 
@@ -140,6 +137,7 @@ const UncontrolledForm: FC = () => {
         abortEarly: false,
       });
       setErrors({});
+
       addFormData({
         name: validatedData.name,
         age: Number(validatedData.age),
@@ -147,10 +145,14 @@ const UncontrolledForm: FC = () => {
         password: validatedData.password,
         confirmPassword: validatedData.confirmPassword,
         gender: validatedData.gender,
-        acceptTerms: validatedData.acceptTerms,
-        picture: validatedData.picture,
+        acceptTerms: Boolean(validatedData.acceptTerms),
+        picture:
+          typeof validatedData.picture === 'string'
+            ? validatedData.picture
+            : '',
         country: validatedData.country,
       });
+
       const closeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
       document.dispatchEvent(closeEvent);
     } catch (err) {
@@ -251,7 +253,7 @@ const UncontrolledForm: FC = () => {
 
       <div className="form-group">
         <label htmlFor="acceptTerms">
-          <input type="checkbox" id="acceptTerms" name="acceptTerms" /> I accept
+          <input type="checkbox" id="acceptTerms" name="acceptTerms" />I accept
           the Terms and Conditions
         </label>
         {errors.acceptTerms && (
