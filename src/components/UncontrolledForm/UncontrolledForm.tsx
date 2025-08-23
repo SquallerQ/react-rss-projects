@@ -1,82 +1,15 @@
 import { FC, FormEvent, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { useFormStore } from '../../store';
+
+import { getPasswordStrength } from '../../utils/passwordStrength';
+import { validationSchema } from '../../utils/validationSchema';
+import type {
+  FormData as FormDataType,
+  FormErrors,
+} from '../../types/formTypes';
+
 import '../../styles/FormStyles.css';
-
-interface FormData {
-  name: string;
-  age: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
-  acceptTerms: boolean;
-  picture: string;
-  country: string;
-}
-
-interface FormErrors {
-  name?: string;
-  age?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  gender?: string;
-  acceptTerms?: string;
-  picture?: string;
-  country?: string;
-}
-
-const getPasswordStrength = (
-  password: string
-): { text: string; className: string } => {
-  let strength = 0;
-  if (password.match(/([0-9])/)) strength += 1;
-  if (password.match(/([A-Z])/)) strength += 1;
-  if (password.match(/([a-z])/)) strength += 1;
-  if (password.match(/([!@#$%^&*])/)) strength += 1;
-  if (strength === 4) return { text: 'Strong', className: 'strength-strong' };
-  if (strength >= 2) return { text: 'Medium', className: 'strength-medium' };
-  return { text: 'Weak', className: 'strength-weak' };
-};
-
-const validationSchema = Yup.object({
-  name: Yup.string()
-    .matches(/^[A-Z]/, 'Name must start with an uppercase letter')
-    .matches(/^[a-zA-Z0-9]*$/, 'Name must contain only Latin characters')
-    .required('Name is required'),
-  age: Yup.number()
-    .typeError('Age must be a number')
-    .min(13, 'Age must be at least 13 years')
-    .required('Age is required'),
-  email: Yup.string()
-    .email('Invalid email format')
-    .matches(/^[a-zA-Z0-9@.]*$/, 'Email must contain only Latin characters')
-    .required('Email is required'),
-  password: Yup.string()
-    .matches(
-      /^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])/,
-      'Password must contain at least one number, one uppercase letter, one lowercase letter, and one special character'
-    )
-    .matches(
-      /^[a-zA-Z0-9!@#$%^&*]*$/,
-      'Password must contain only Latin characters'
-    )
-    .required('Password is required'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
-    .matches(
-      /^[a-zA-Z0-9!@#$%^&*]*$/,
-      'Confirm password must contain only Latin characters'
-    )
-    .required('Required'),
-  gender: Yup.string().required('Required'),
-  acceptTerms: Yup.boolean()
-    .oneOf([true], 'You must accept the terms and conditions')
-    .required('Required'),
-  picture: Yup.string().required('Required'),
-  country: Yup.string().required('Required'),
-});
 
 const UncontrolledForm: FC<{
   focusRef?: React.RefObject<HTMLInputElement | null>;
@@ -100,9 +33,9 @@ const UncontrolledForm: FC<{
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const data: FormData = {
+    const data: FormDataType = {
       name: formData.get('name') as string,
-      age: formData.get('age') as string,
+      age: formData.get('age') ? Number(formData.get('age')) : null,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
       confirmPassword: formData.get('confirmPassword') as string,
@@ -133,7 +66,7 @@ const UncontrolledForm: FC<{
     }
   };
 
-  const validateAndSubmit = async (data: FormData) => {
+  const validateAndSubmit = async (data: FormDataType) => {
     try {
       const validatedData = await validationSchema.validate(data, {
         abortEarly: false,
