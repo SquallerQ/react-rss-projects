@@ -18,9 +18,31 @@
   background-color: #732a8d;
   color: #fff;
   border-radius: 4px;
-  transition: .4s all ease;
+  transition: 0.4s all ease;
 }
 
 .main-page button:hover {
   background-color: #480161;
+}
+
+.forms-list {
+  margin-top: 40px;
+}
+
+.form-tile {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.new-tile {
+  background-color: #d4edda;
+}
+
+.tile-image {
+  max-width: 100px;
+  height: auto;
+  margin-top: 10px;
 }

@@ -31,7 +31,7 @@
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
-  transition: .4s all ease;
+  transition: 0.4s all ease;
 }
 
 .modal-close:hover {

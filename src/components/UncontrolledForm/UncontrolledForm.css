@@ -1,0 +1,90 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  min-height: 18px;
+  margin-top: 5px;
+}
+
+button[type='submit'] {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button[type='submit']:hover {
+  background-color: #218838;
+}
+
+.strength {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.strength-weak {
+  color: #bb3535;
+}
+
+.strength-medium {
+  color: #ffc107;
+}
+
+.strength-strong {
+  color: #28a745;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggle-password {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.toggle-password:hover {
+  background-color: #e9ecef;
+}
