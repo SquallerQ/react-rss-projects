@@ -26,6 +26,18 @@ label {
   text-align: right;
 }
 
+.data-table th {
+  cursor: pointer;
+  user-select: none;
+  padding: 6px;
+  background: #f5f5f5;
+  border-bottom: 2px solid #ddd;
+}
+
+.data-table th:hover {
+  background: #eaeaea;
+}
+
 .data-table th:first-child,
 .data-table td:first-child {
   text-align: left;
@@ -47,4 +59,11 @@ label {
   to {
     background-color: transparent;
   }
+}
+
+.search-input {
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

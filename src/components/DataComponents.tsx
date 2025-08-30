@@ -39,10 +39,15 @@ const CountriesTable: React.FC<{ dataset: Co2Dataset }> = ({ dataset }) => {
   const [highlighted, setHighlighted] = React.useState<
     Record<string, string[]>
   >({});
+  const [search, setSearch] = React.useState<string>('');
+  const [sortConfig, setSortConfig] = React.useState<{
+    key: string;
+    direction: 'asc' | 'desc';
+  } | null>(null);
 
   const { countries, availableYears } = React.useMemo(() => {
     const years = new Set<number>();
-    const list = Object.entries(dataset).map(([country, data]) => {
+    let list = Object.entries(dataset).map(([country, data]) => {
       data.forEach((d) => years.add(d.year));
       const yearData = data.find((d) => d.year === selectedYear);
       return {
@@ -54,42 +59,81 @@ const CountriesTable: React.FC<{ dataset: Co2Dataset }> = ({ dataset }) => {
         allYears: data,
       };
     });
+
+    list = list.filter((c) =>
+      c.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (sortConfig) {
+      list = [...list].sort((a, b) => {
+        const key = sortConfig.key as keyof typeof a;
+        const valA = a[key];
+        const valB = b[key];
+        if (valA == null) return 1;
+        if (valB == null) return -1;
+
+        if (typeof valA === 'string' && typeof valB === 'string') {
+          return sortConfig.direction === 'asc'
+            ? valA.localeCompare(valB)
+            : valB.localeCompare(valA);
+        }
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return sortConfig.direction === 'asc' ? valA - valB : valB - valA;
+        }
+        return 0;
+      });
+    }
+
     return {
       countries: list,
       availableYears: Array.from(years).sort((a, b) => b - a),
     };
-  }, [dataset, selectedYear]);
+  }, [dataset, selectedYear, search, sortConfig]);
 
   const handleYearChange = (year: number) => {
     const newHighlighted: Record<string, string[]> = {};
-
     Object.entries(dataset).forEach(([country, data]) => {
       const prevData = data.find((d) => d.year === selectedYear);
       const nextData = data.find((d) => d.year === year);
-
       if (!prevData || !nextData) return;
-
       const changed: string[] = [];
       if (prevData.population !== nextData.population)
         changed.push('population');
       if (prevData.co2 !== nextData.co2) changed.push('co2');
       if (prevData.co2_per_capita !== nextData.co2_per_capita)
         changed.push('co2_per_capita');
-
       if (changed.length) {
         newHighlighted[country] = changed;
       }
     });
-
     setSelectedYear(year);
     setHighlighted(newHighlighted);
-
     setTimeout(() => setHighlighted({}), 1000);
+  };
+
+  const handleSort = (key: string) => {
+    setSortConfig((prev) => {
+      if (!prev || prev.key !== key) {
+        return { key, direction: 'asc' };
+      }
+      if (prev.direction === 'asc') {
+        return { key, direction: 'desc' };
+      }
+      return null;
+    });
   };
 
   return (
     <div>
       <h1>CO₂ Emissions by Countries</h1>
+
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search country..."
+        className="search-input"
+      />
 
       <label>
         Year:
@@ -108,11 +152,11 @@ const CountriesTable: React.FC<{ dataset: Co2Dataset }> = ({ dataset }) => {
       <table className="data-table">
         <thead>
           <tr>
-            <th>Country</th>
-            <th>ISO</th>
-            <th>Population</th>
-            <th>CO₂</th>
-            <th>CO₂ per Capita</th>
+            <th onClick={() => handleSort('name')}>Country</th>
+            <th onClick={() => handleSort('iso_code')}>ISO</th>
+            <th onClick={() => handleSort('population')}>Population</th>
+            <th onClick={() => handleSort('co2')}>CO₂</th>
+            <th onClick={() => handleSort('co2_per_capita')}>CO₂ per Capita</th>
           </tr>
         </thead>
         <tbody>
