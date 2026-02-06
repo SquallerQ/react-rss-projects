@@ -9,9 +9,7 @@ import { FormData } from '../../types/formTypes';
 
 import '../../styles/FormStyles.css';
 
-const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
-  focusRef,
-}) => {
+const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({ focusRef }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<{
@@ -52,10 +50,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
     }
   });
 
-  const handleFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    onChange: (value: string) => void
-  ) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, onChange: (value: string) => void) => {
     const file = event.target.files?.[0];
     if (file) {
       if (!['image/png', 'image/jpeg'].includes(file.type)) {
@@ -97,9 +92,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
         <Controller
           name="name"
           control={control}
-          render={({ field }) => (
-            <input type="text" id="hookform-name" {...field} ref={focusRef} />
-          )}
+          render={({ field }) => <input type="text" id="hookform-name" {...field} ref={focusRef} placeholder="Name" />}
         />
         {errors.name && <span className="error">{errors.name.message}</span>}
       </div>
@@ -113,11 +106,10 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
             <input
               type="number"
               id="hookform-age"
+              placeholder="Age"
               {...field}
               value={field.value ?? ''}
-              onChange={(e) =>
-                field.onChange(Number(e.target.value) || undefined)
-              }
+              onChange={(e) => field.onChange(Number(e.target.value) || undefined)}
             />
           )}
         />
@@ -129,9 +121,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
         <Controller
           name="email"
           control={control}
-          render={({ field }) => (
-            <input type="email" id="hookform-email" {...field} />
-          )}
+          render={({ field }) => <input type="email" id="hookform-email" placeholder="email@gmail.com" {...field} />}
         />
         {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
@@ -146,6 +136,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
               <input
                 type={showPassword ? 'text' : 'password'}
                 id="hookform-password"
+                placeholder="Password"
                 {...field}
                 onChange={(e) => {
                   field.onChange(e);
@@ -156,20 +147,17 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
           />
           <button
             type="button"
-            className="toggle-password"
+            className={`toggle-password ${showPassword ? 'is-visible' : ''}`}
             onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? 'Hide' : 'Show'}
-          </button>
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showPassword}
+            title={showPassword ? 'Hide password' : 'Show password'}
+          />
         </div>
         {passwordStrength.text && (
-          <span className={`strength ${passwordStrength.className}`}>
-            Strength: {passwordStrength.text}
-          </span>
+          <span className={`strength ${passwordStrength.className}`}>Strength: {passwordStrength.text}</span>
         )}
-        {errors.password && (
-          <span className="error">{errors.password.message}</span>
-        )}
+        {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 
       <div className="form-group">
@@ -182,21 +170,21 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 id="hookform-confirmPassword"
+                placeholder="Password"
                 {...field}
               />
             )}
           />
           <button
             type="button"
-            className="toggle-password"
+            className={`toggle-password ${showConfirmPassword ? 'is-visible' : ''}`}
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            {showConfirmPassword ? 'Hide' : 'Show'}
-          </button>
+            aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showConfirmPassword}
+            title={showConfirmPassword ? 'Hide password' : 'Show password'}
+          />
         </div>
-        {errors.confirmPassword && (
-          <span className="error">{errors.confirmPassword.message}</span>
-        )}
+        {errors.confirmPassword && <span className="error">{errors.confirmPassword.message}</span>}
       </div>
 
       <div className="form-group">
@@ -233,9 +221,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
             Female
           </label>
         </div>
-        {errors.gender && (
-          <span className="error">{errors.gender.message}</span>
-        )}
+        {errors.gender && <span className="error">{errors.gender.message}</span>}
       </div>
 
       <div className="form-group">
@@ -244,19 +230,12 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
             name="acceptTerms"
             control={control}
             render={({ field }) => (
-              <input
-                type="checkbox"
-                id="hookform-acceptTerms"
-                checked={field.value}
-                onChange={field.onChange}
-              />
+              <input type="checkbox" id="hookform-acceptTerms" checked={field.value} onChange={field.onChange} />
             )}
           />
           I accept the Terms and Conditions
         </label>
-        {errors.acceptTerms && (
-          <span className="error">{errors.acceptTerms.message}</span>
-        )}
+        {errors.acceptTerms && <span className="error">{errors.acceptTerms.message}</span>}
       </div>
 
       <div className="form-group">
@@ -273,9 +252,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
             />
           )}
         />
-        {errors.picture && (
-          <span className="error">{errors.picture.message}</span>
-        )}
+        {errors.picture && <span className="error">{errors.picture.message}</span>}
       </div>
 
       <div className="form-group">
@@ -294,9 +271,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
             </select>
           )}
         />
-        {errors.country && (
-          <span className="error">{errors.country.message}</span>
-        )}
+        {errors.country && <span className="error">{errors.country.message}</span>}
       </div>
 
       <button type="submit" disabled={!isValid}>

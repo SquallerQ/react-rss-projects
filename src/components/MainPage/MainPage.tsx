@@ -6,9 +6,7 @@ import { useFormStore } from '../../store';
 import './MainPage.css';
 
 const MainPage: FC = () => {
-  const [modalType, setModalType] = useState<'uncontrolled' | 'hook' | null>(
-    null
-  );
+  const [modalType, setModalType] = useState<'uncontrolled' | 'hook' | null>(null);
   const uncontrolledButtonRef = useRef<HTMLButtonElement>(null);
   const hookButtonRef = useRef<HTMLButtonElement>(null);
   const uncontrolledNameInputRef = useRef<HTMLInputElement>(null);
@@ -39,10 +37,7 @@ const MainPage: FC = () => {
   return (
     <div className="main-page">
       <h1>React Forms</h1>
-      <button
-        ref={uncontrolledButtonRef}
-        onClick={() => openModal('uncontrolled')}
-      >
+      <button ref={uncontrolledButtonRef} onClick={() => openModal('uncontrolled')}>
         Open Uncontrolled Form
       </button>
       <button ref={hookButtonRef} onClick={() => openModal('hook')}>
@@ -51,24 +46,15 @@ const MainPage: FC = () => {
       <Modal
         isOpen={modalType !== null}
         onClose={closeModal}
-        focusRef={
-          modalType === 'uncontrolled'
-            ? uncontrolledNameInputRef
-            : hookNameInputRef
-        }
+        focusRef={modalType === 'uncontrolled' ? uncontrolledNameInputRef : hookNameInputRef}
       >
-        {modalType === 'uncontrolled' && (
-          <UncontrolledForm focusRef={uncontrolledNameInputRef} />
-        )}
+        {modalType === 'uncontrolled' && <UncontrolledForm focusRef={uncontrolledNameInputRef} />}
         {modalType === 'hook' && <HookForm focusRef={hookNameInputRef} />}
       </Modal>
       <div className="forms-list">
         <h2>Submitted Forms</h2>
         {forms.map((form) => (
-          <div
-            key={form.id}
-            className={`form-tile ${form.isNew ? 'new-tile' : ''}`}
-          >
+          <div key={form.id} className={`form-tile ${form.isNew ? 'new-tile' : ''}`}>
             <p>
               <strong>Name:</strong> {form.name}
             </p>
@@ -87,11 +73,7 @@ const MainPage: FC = () => {
             <p>
               <strong>Accepted Terms:</strong> {form.acceptTerms ? 'Yes' : 'No'}
             </p>
-            <img
-              src={form.picture}
-              alt="Uploaded picture"
-              className="tile-image"
-            />
+            <img src={form.picture} alt="Uploaded picture" className="tile-image" />
           </div>
         ))}
       </div>

@@ -6,6 +6,8 @@
 }
 
 .main-page h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
   margin-bottom: 20px;
 }
 
@@ -26,7 +28,7 @@
 }
 
 .forms-list {
-  margin-top: 40px;
+  margin-top: 40px; 
 }
 
 .form-tile {

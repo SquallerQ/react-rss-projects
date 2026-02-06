@@ -1,0 +1,56 @@
+img {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src:
+    url('/fonts/Poppins-ExtraLight.woff2') format('woff2'),
+    url('/fonts/Poppins-ExtraLight.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src:
+    url('/fonts/Poppins-Regular.woff2') format('woff2'),
+    url('/fonts/Poppins-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+body {
+  display: flex;
+  justify-content: center;
+
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+
+  color: #fff;
+  background-color: rgb(94, 75, 211);
+  background-image: url('/public/image.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+

@@ -17,24 +17,16 @@ describe('UncontrolledForm', () => {
       /accept.*terms/i,
       /upload picture/i,
       /country/i,
-    ].forEach((label) =>
-      expect(screen.getByLabelText(label)).toBeInTheDocument()
-    );
-    expect(
-      screen.getByRole('heading', { name: /uncontrolled form/i })
-    ).toBeInTheDocument();
+    ].forEach((label) => expect(screen.getByLabelText(label)).toBeInTheDocument());
+    expect(screen.getByRole('heading', { name: /uncontrolled form/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
   });
 
   it('toggles password visibility', async () => {
     const user = userEvent.setup();
     render(<UncontrolledForm />);
-    const passwordInput = screen.getByLabelText(
-      /^password$/i
-    ) as HTMLInputElement;
-    const showBtn = screen
-      .getAllByRole('button')
-      .find((b) => b.textContent === 'Show');
+    const passwordInput = screen.getByLabelText(/^password$/i) as HTMLInputElement;
+    const showBtn = screen.getAllByRole('button').find((b) => b.textContent === 'Show');
     expect(passwordInput.type).toBe('password');
     if (showBtn) {
       await user.click(showBtn);
@@ -70,9 +62,7 @@ describe('UncontrolledForm', () => {
   it('toggles confirm password visibility', async () => {
     const user = userEvent.setup();
     render(<UncontrolledForm />);
-    const confirmInput = screen.getByLabelText(
-      /confirm password/i
-    ) as HTMLInputElement;
+    const confirmInput = screen.getByLabelText(/confirm password/i) as HTMLInputElement;
     const toggleBtn = screen.getAllByRole('button', { name: /show/i })[1];
     expect(confirmInput.type).toBe('password');
     await user.click(toggleBtn);

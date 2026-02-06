@@ -24,9 +24,7 @@ describe('HookForm', () => {
 
   it('renders all form fields and disables submit initially', () => {
     renderForm();
-    expect(
-      screen.getByRole('heading', { name: /react hook form/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /react hook form/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled();
   });
 

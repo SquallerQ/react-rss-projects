@@ -4,10 +4,7 @@ import { useFormStore } from '../../store';
 
 import { getPasswordStrength } from '../../utils/passwordStrength';
 import { validationSchema } from '../../utils/validationSchema';
-import type {
-  FormData as FormDataType,
-  FormErrors,
-} from '../../types/formTypes';
+import type { FormData as FormDataType, FormErrors } from '../../types/formTypes';
 
 import '../../styles/FormStyles.css';
 
@@ -81,10 +78,7 @@ const UncontrolledForm: FC<{
         confirmPassword: validatedData.confirmPassword,
         gender: validatedData.gender,
         acceptTerms: Boolean(validatedData.acceptTerms),
-        picture:
-          typeof validatedData.picture === 'string'
-            ? validatedData.picture
-            : '',
+        picture: typeof validatedData.picture === 'string' ? validatedData.picture : '',
         country: validatedData.country,
       });
 
@@ -109,19 +103,19 @@ const UncontrolledForm: FC<{
 
       <div className="form-group">
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" ref={focusRef} />
+        <input type="text" id="name" name="name" ref={focusRef} placeholder="Name" />
         {errors.name && <span className="error">{errors.name}</span>}
       </div>
 
       <div className="form-group">
         <label htmlFor="age">Age</label>
-        <input type="number" id="age" name="age" />
+        <input type="number" id="age" name="age" placeholder="Age" />
         {errors.age && <span className="error">{errors.age}</span>}
       </div>
 
       <div className="form-group">
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" />
+        <input type="email" id="email" name="email" placeholder="email@gmail.com" />
         {errors.email && <span className="error">{errors.email}</span>}
       </div>
 
@@ -133,19 +127,19 @@ const UncontrolledForm: FC<{
             id="password"
             name="password"
             onChange={handlePasswordChange}
+            placeholder="Password"
           />
           <button
             type="button"
-            className="toggle-password"
+            className={`toggle-password ${showPassword ? 'is-visible' : ''}`}
             onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? 'Hide' : 'Show'}
-          </button>
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showPassword}
+            title={showPassword ? 'Hide password' : 'Show password'}
+          />
         </div>
         {passwordStrength.text && (
-          <span className={`strength ${passwordStrength.className}`}>
-            Strength: {passwordStrength.text}
-          </span>
+          <span className={`strength ${passwordStrength.className}`}>Strength: {passwordStrength.text}</span>
         )}
         {errors.password && <span className="error">{errors.password}</span>}
       </div>
@@ -157,18 +151,18 @@ const UncontrolledForm: FC<{
             type={showConfirmPassword ? 'text' : 'password'}
             id="confirmPassword"
             name="confirmPassword"
+            placeholder="Password"
           />
           <button
             type="button"
-            className="toggle-password"
+            className={`toggle-password ${showConfirmPassword ? 'is-visible' : ''}`}
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            {showConfirmPassword ? 'Hide' : 'Show'}
-          </button>
+            aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showConfirmPassword}
+            title={showConfirmPassword ? 'Hide password' : 'Show password'}
+          />
         </div>
-        {errors.confirmPassword && (
-          <span className="error">{errors.confirmPassword}</span>
-        )}
+        {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
       </div>
 
       <div className="form-group">
@@ -188,22 +182,14 @@ const UncontrolledForm: FC<{
 
       <div className="form-group">
         <label htmlFor="acceptTerms">
-          <input type="checkbox" id="acceptTerms" name="acceptTerms" />I accept
-          the Terms and Conditions
+          <input type="checkbox" id="acceptTerms" name="acceptTerms" />I accept the Terms and Conditions
         </label>
-        {errors.acceptTerms && (
-          <span className="error">{errors.acceptTerms}</span>
-        )}
+        {errors.acceptTerms && <span className="error">{errors.acceptTerms}</span>}
       </div>
 
       <div className="form-group">
         <label htmlFor="picture">Upload Picture</label>
-        <input
-          type="file"
-          id="picture"
-          name="picture"
-          accept="image/png,image/jpeg"
-        />
+        <input type="file" id="picture" name="picture" accept="image/png,image/jpeg" />
         {errors.picture && <span className="error">{errors.picture}</span>}
       </div>
 

@@ -23,17 +23,7 @@ interface FormState {
 
 export const useFormStore = create<FormState>((set) => ({
   forms: [],
-  countries: [
-    'USA',
-    'Belarus',
-    'Germany',
-    'France',
-    'Russia',
-    'Ukraine',
-    'Poland',
-    'Spain',
-    'Italy',
-  ],
+  countries: ['USA', 'Belarus', 'Germany', 'France', 'Russia', 'Ukraine', 'Poland', 'Spain', 'Italy'],
   addFormData: (data) =>
     set((state) => {
       const newData = { ...data, id: Date.now(), isNew: true };
@@ -41,8 +31,6 @@ export const useFormStore = create<FormState>((set) => ({
     }),
   markAsRead: (id) =>
     set((state) => ({
-      forms: state.forms.map((item) =>
-        item.id === id ? { ...item, isNew: false } : item
-      ),
+      forms: state.forms.map((item) => (item.id === id ? { ...item, isNew: false } : item)),
     })),
 }));
