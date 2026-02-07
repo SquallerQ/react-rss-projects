@@ -1,0 +1,174 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.form-group input:not(.gender-radio),
+.form-group select {
+  background: transparent;
+  padding: 10px 20px;
+  padding-right: 44px;
+  border-radius: 40px;
+  font-size: 16px;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  outline: none;
+
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 20px 28px;
+}
+.form-group select {
+  color: #fff;
+  background-color: #1f304b;
+}
+
+.form-group input::placeholder {
+  color: #ccc;
+}
+#hookform-name,
+#name {
+  background-image: url('/public/icons/user.svg');
+}
+
+#hookform-age,
+#age {
+  background-image: url('/public/icons/age.svg');
+  background-size: 18px 28px;
+}
+
+#hookform-email,
+#email {
+  background-image: url('/public/icons/email.svg');
+}
+
+#hookform-password,
+#hookform-confirmPassword,
+#password,
+#confirmPassword {
+  background-image: url('/public/icons/password.svg');
+}
+
+.form-group label {
+  display: flex;
+  margin-bottom: 5px;
+  font-weight: bold;
+  gap: 7px;
+}
+
+.form-group label input {
+  accent-color: #fff;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.radio-group .gender-radio {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.radio-group .gender-radio:checked {
+  background-color: #fff;
+}
+
+.error {
+  color: #ffb2b2;
+  font-size: 12px;
+  min-height: 18px;
+  margin-top: 5px;
+}
+
+button[type='submit'] {
+  padding: 10px;
+  margin-top: 10px;
+  font-weight: 700;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid transparent;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: 0.4s all ease;
+
+  cursor: pointer;
+}
+
+button[type='submit']:hover:not(:disabled) {
+  color: #fff;
+  background: transparent;
+  border: 1px solid #fff;
+}
+
+button[type='submit']:disabled {
+  background-color: #6c757d;
+  cursor: auto;
+}
+
+.strength {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.strength-weak {
+  color: #ff5a5a;
+}
+
+.strength-medium {
+  color: #ffd044;
+}
+
+.strength-strong {
+  color: #28a745;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggle-password {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background-color: transparent;
+  background-image: url('/public/icons/show.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  cursor: pointer;
+}
+
+.toggle-password.is-visible {
+  background-image: url('/public/icons/hide.svg');
+}
+
+.toggle-password:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

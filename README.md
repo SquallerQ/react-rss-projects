@@ -2,21 +2,12 @@
 
 Educational assignments completed as part of the [Rolling Scopes School](https://rs.school/) React course.
 
-## Main Project: Pokemon App
-
-The primary course project has been moved to a separate repository for portfolio presentation:  
-**[pokemon-app](https://github.com/SquallerQ/pokemon-app)**
-
-Demonstrates the evolution of a React application through 6 development stages from class components to Next.js with Server-Side Rendering.
-
----
-
-## Additional Assignments
-
+## 1. Forms (`forms` branch)
 ## 🌐 Live Demo
 [Netlify](https://squallerq-forms.netlify.app/)
 
-### 1. Forms (`forms` branch)
+## 🖥️ Screenshot
+![Forms](public/screenshot.png)
 
 Implementation and comparison of different form handling approaches in React.
 

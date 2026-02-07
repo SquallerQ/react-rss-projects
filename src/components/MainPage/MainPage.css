@@ -1,0 +1,52 @@
+.main-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-page h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.main-page button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #fff;
+  background-color: transparent;
+  color: #fff;
+  border-radius: 4px;
+  transition: 0.4s all ease;
+}
+
+.main-page button:hover {
+  color: #000;
+  background-color: #fff;
+}
+
+.forms-list {
+  margin-top: 40px;
+}
+
+.form-tile {
+  background-color: #151f43;
+  border: 1px solid #dee2e6;
+  opacity: 0.9;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.new-tile {
+  background-color: transparent;
+}
+
+.tile-image {
+  max-width: 100px;
+  height: auto;
+  margin-top: 10px;
+}
