@@ -18,7 +18,7 @@ form {
   border-radius: 40px;
   font-size: 16px;
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, .1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   outline: none;
 
   background-repeat: no-repeat;
@@ -28,22 +28,27 @@ form {
 
 .form-group input::placeholder {
   color: #ccc;
-
 }
-#hookform-name, #name {
+#hookform-name,
+#name {
   background-image: url('/public/icons/user.svg');
 }
 
-#hookform-age, #age {
+#hookform-age,
+#age {
   background-image: url('/public/icons/age.svg');
   background-size: 18px 28px;
 }
 
-#hookform-email, #email {
+#hookform-email,
+#email {
   background-image: url('/public/icons/email.svg');
 }
 
-#hookform-password, #hookform-confirmPassword, #password, #confirmPassword {
+#hookform-password,
+#hookform-confirmPassword,
+#password,
+#confirmPassword {
   background-image: url('/public/icons/password.svg');
 }
 
@@ -85,7 +90,7 @@ button[type='submit'] {
   border: none;
   outline: none;
   border-radius: 40px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
@@ -143,4 +148,3 @@ button[type='submit']:disabled {
 .toggle-password:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
