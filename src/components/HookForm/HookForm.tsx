@@ -197,6 +197,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
               render={({ field }) => (
                 <input
                   type="radio"
+                  className="gender-radio"
                   value="male"
                   checked={field.value === 'male'}
                   onChange={() => field.onChange('male')}
@@ -212,6 +213,7 @@ const HookForm: FC<{ focusRef?: React.RefObject<HTMLInputElement | null> }> = ({
               render={({ field }) => (
                 <input
                   type="radio"
+                  className="gender-radio"
                   value="female"
                   checked={field.value === 'female'}
                   onChange={() => field.onChange('female')}

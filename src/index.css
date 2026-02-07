@@ -47,7 +47,7 @@ body {
 
   color: #fff;
   background-color: rgb(94, 75, 211);
-  background-image: url('/public/image.jpg');
+  background-image: url('/public/bg.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }

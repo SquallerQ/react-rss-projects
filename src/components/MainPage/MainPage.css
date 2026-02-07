@@ -16,15 +16,16 @@
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  border: none;
-  background-color: #732a8d;
+  border: 1px solid #fff;
+  background-color: transparent;
   color: #fff;
   border-radius: 4px;
   transition: 0.4s all ease;
 }
 
 .main-page button:hover {
-  background-color: #480161;
+  color: #000;
+  background-color: #fff;
 }
 
 .forms-list {
@@ -32,15 +33,16 @@
 }
 
 .form-tile {
-  background-color: #f8f9fa;
+  background-color: #151f43;
   border: 1px solid #dee2e6;
+  opacity: 0.9;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 8px;
 }
 
 .new-tile {
-  background-color: #d4edda;
+  background-color: transparent;
 }
 
 .tile-image {

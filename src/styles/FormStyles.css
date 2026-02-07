@@ -10,7 +10,7 @@ form {
   color: #fff;
 }
 
-.form-group input,
+.form-group input:not(.gender-radio),
 .form-group select {
   background: transparent;
   padding: 10px 20px;
@@ -24,6 +24,10 @@ form {
   background-repeat: no-repeat;
   background-position: right 18px center;
   background-size: 20px 28px;
+}
+.form-group select {
+  color: #fff;
+  background-color: #1f304b;
 }
 
 .form-group input::placeholder {
@@ -74,8 +78,24 @@ form {
   gap: 7px;
 }
 
+.radio-group .gender-radio {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.radio-group .gender-radio:checked {
+  background-color: #fff;
+}
+
 .error {
-  color: red;
+  color: #ffb2b2;
   font-size: 12px;
   min-height: 18px;
   margin-top: 5px;
@@ -87,20 +107,24 @@ button[type='submit'] {
   font-weight: 700;
   background-color: #fff;
   color: #333;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   border-radius: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: 0.4s all ease;
+
   cursor: pointer;
 }
 
-button[type='submit']:hover {
-  background-color: #218838;
+button[type='submit']:hover:not(:disabled) {
+  color: #fff;
+  background: transparent;
+  border: 1px solid #fff;
 }
 
 button[type='submit']:disabled {
   background-color: #6c757d;
-  cursor: not-allowed;
+  cursor: auto;
 }
 
 .strength {
@@ -109,11 +133,11 @@ button[type='submit']:disabled {
 }
 
 .strength-weak {
-  color: #bb3535;
+  color: #ff5a5a;
 }
 
 .strength-medium {
-  color: #ffc107;
+  color: #ffd044;
 }
 
 .strength-strong {

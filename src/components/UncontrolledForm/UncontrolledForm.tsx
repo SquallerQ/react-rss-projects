@@ -169,11 +169,11 @@ const UncontrolledForm: FC<{
         <label>Gender</label>
         <div className="radio-group">
           <label>
-            <input type="radio" name="gender" value="male" />
+            <input type="radio" name="gender" value="male" className="gender-radio" />
             Male
           </label>
           <label>
-            <input type="radio" name="gender" value="female" />
+            <input type="radio" name="gender" value="female" className="gender-radio" />
             Female
           </label>
         </div>
