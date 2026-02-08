@@ -1,3 +1,9 @@
+## 🌐 Live Demo
+[Netlify](https://squallerq-performance.netlify.app/)
+
+## 🖥️ Screenshot
+![Performance](public/screenshot.png)
+
 ## Performance Report
 
 ### Before Optimization
