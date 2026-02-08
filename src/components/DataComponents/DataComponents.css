@@ -1,12 +1,15 @@
 h1 {
   text-align: center;
   margin-bottom: 20px;
+  color: var(--text);
+  font-weight: 600;
 }
 
 label {
   display: block;
   margin: 10px auto;
   text-align: center;
+  color: var(--muted);
 }
 
 .error {
@@ -17,12 +20,14 @@ label {
   border-collapse: collapse;
   width: 100%;
   margin-top: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
 }
 
 .data-table th,
 .data-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
   text-align: right;
 }
 
@@ -30,12 +35,13 @@ label {
   cursor: pointer;
   user-select: none;
   padding: 6px;
-  background: #f5f5f5;
-  border-bottom: 2px solid #ddd;
+  background: var(--accent-soft);
+  color: var(--text);
+  border-bottom: 2px solid var(--border);
 }
 
 .data-table th:hover {
-  background: #eaeaea;
+  background: #e6f0ff;
 }
 
 .data-table th:first-child,
@@ -44,17 +50,25 @@ label {
 }
 
 .data-table thead {
-  background: #eee;
+  background: var(--accent-soft);
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: var(--row-alt);
+}
+
+.data-table tbody tr:hover {
+  background: #eef2ff;
 }
 
 .highlight {
-  background-color: yellow;
+  background-color: var(--highlight);
   animation: fadeOut 2s forwards;
 }
 
 @keyframes fadeOut {
   from {
-    background-color: yellow;
+    background-color: var(--highlight);
   }
   to {
     background-color: transparent;
@@ -63,9 +77,26 @@ label {
 
 .search-input {
   margin: 10px 0;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+select {
+  margin-left: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
 }
 
 .modal-overlay {
@@ -74,7 +105,7 @@ label {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,29 +113,31 @@ label {
 }
 
 .modal-content {
-  background: white;
-  border-radius: 8px;
+  background: var(--panel);
+  border-radius: 10px;
   padding: 24px;
   max-width: 400px;
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
 }
 
 .modal-content h3 {
   margin: 0 0 16px 0;
   font-size: 1.2rem;
   font-weight: 600;
+  color: var(--text);
 }
 
 .column-list {
   max-height: 300px;
   overflow-y: auto;
   margin-bottom: 20px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px;
 }
 
 .column-item {
@@ -113,12 +146,12 @@ label {
   padding: 8px;
   margin: 4px 0;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.2s;
 }
 
 .column-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--row-alt);
 }
 
 .column-item input {
@@ -136,15 +169,15 @@ label {
 }
 
 .btn-primary {
-  background: #007bff;
+  background: var(--accent);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .btn-primary:hover {
-  background: #0056b3;
+  background: var(--accent-600);
 }
